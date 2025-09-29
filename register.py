@@ -15,6 +15,9 @@ def submit():
         if user["name"] == name:
             result_label.configure(text="This name is already have", foreground="orange")
             return
+    if name == "" or age == "" or gender == "" or password == "":
+        result_label.configure(text="All fields requried *", foreground="Orange")
+        return
 
     users_data = {
         "name" : name ,

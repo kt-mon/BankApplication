@@ -16,7 +16,7 @@ def submit():
             result_label.configure(text="This name is already have", foreground="orange")
             return
     if name == "" or age == "" or gender == "" or password == "":
-        result_label.configure(text="All fields requried *", foreground="Orange")
+        result_label.configure(text="All fields requried *", foreground="red")
         return
 
     users_data = {
@@ -30,12 +30,14 @@ def submit():
     with open("data.py", "w", encoding="utf-8") as f:
         f.write("users = " + str(users))
 
+    result_label.configure(text="Account has been created", foreground="green")
+
     name_var.set("")
     age_var.set("")
     gender_var.set("")
     password_var.set("")
 
-    window.destroy()
+    window.after(2000,window.destroy)
     
 
 window = tk.Tk()
@@ -67,7 +69,7 @@ gender_entry.grid(row=3, column=0, padx=50)
 
 password_label = ttk.Label(window, text="Password", font=("Helvetica",10))
 password_label.grid(row=4, sticky="W",pady=10 )
-password_entry = ttk.Entry(window,textvariable=password_var)
+password_entry = ttk.Entry(window,textvariable=password_var,show="*")
 password_entry.grid(row=4, column=0, padx=70)
 
 submit_button = ttk.Button(window, text="Submit", command=submit)
@@ -76,4 +78,5 @@ submit_button.grid(row=5, column=0, padx=65)
 result_label = ttk.Label(window, text="", font=("Helvetica", 10))
 result_label.grid(row=6,column=0, padx=50)
 
+name_entry.focus()
 window.mainloop()

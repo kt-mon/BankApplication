@@ -1,6 +1,6 @@
 import tkinter as tk
 from tkinter import ttk
-from PIL import  ImageTk, Image  
+from PIL import ImageTk, Image
 import subprocess
 import sys
 
@@ -11,29 +11,49 @@ def login():
 def register():
     subprocess.Popen([sys.executable, "register.py"])
 
-
 window = tk.Tk()
-window.title("Bank Application")
-window.geometry("300x250")
-window.attributes("-topmost",1)
-window.resizable(False,False)
+window.title("KU PLUS Bank Application")
+window.geometry("340x460")
+window.resizable(False, False)
+window.configure(bg="#006A4E")
 
-logo_img = Image.open("Logo_KU+.png")
-logo_img = logo_img.resize((100,100))
-logo_img = ImageTk.PhotoImage(logo_img)
+try:
+    logo_img = Image.open("Logo_KUplus.png")
+    logo_img = logo_img.resize((120, 120))
+    logo_img = ImageTk.PhotoImage(logo_img)
+except:
+    logo_img = None
 
-title_label = ttk.Label(window, text="KU PLUS",font=("Helvetica", 16 ),foreground="green")
-title_label.grid(row=0,column=1 ,pady=10,sticky="N")
+style = ttk.Style()
+style.theme_use("clam")
 
-img_label = ttk.Label(window, image=logo_img)
-img_label.grid(row=1,column=1,sticky="N", pady=10)
+style.configure("TLabel",
+                background="#006A4E",
+                foreground="white",
+                font=("Segoe UI", 12, "bold"))
 
-login_button = ttk.Button(window, text="Login",width=20,command=login)
-login_button.grid(row=2,column=1 ,sticky="N")
+style.configure("TButton",
+                font=("Segoe UI", 11, "bold"),
+                foreground="white",
+                background="#00A86B",
+                borderwidth=0,
+                padding=10)
 
-register_button = ttk.Button(window, text="Register" , width=20, command=register)
-register_button.grid(row=3,column=1, sticky="N")
+style.map("TButton",
+          background=[("active", "#00C77B"), ("pressed", "#009E60")])
 
+if logo_img:
+    img_label = ttk.Label(window, image=logo_img, background="#006A4E")
+    img_label.pack(pady=(40, 10))
 
-window.columnconfigure(1, weight=1)
-window.mainloop()
+title_label = ttk.Label(window, text="KU PLUS", font=("Segoe UI Semibold", 20, "bold"))
+title_label.pack(pady=(0, 20))
+
+button_frame = tk.Frame(window, bg="#006A4E")
+button_frame.pack(pady=10)
+
+login_button = ttk.Button(button_frame, text="เข้าสู่ระบบ", width=20, command=login)
+login_button.pack(pady=10)
+
+register_button = ttk.Button(button_frame, text="สมัครสมาชิก", width=20, command=register)
+register_button.pack(pady=10)

@@ -1,6 +1,8 @@
 import tkinter as tk
 from tkinter import ttk
 import data
+import subprocess
+import sys
 
 def login():
     login_name = username_var.get()
@@ -9,14 +11,19 @@ def login():
     for user in data.users:
         if user["name"] == login_name and user["password"] == login_password:
             result_label.configure(text="Login sucessful", foreground="Green")
-            window.after(3000,window.destroy)
-        else:
-            result_label.configure(text="Invalid username or password", foreground="red")
+            window.after(3000,lambda : subprocess.Popen([sys.executable, "main_app.py"]))
+            window.after(3100,window.destroy)
+            return
+        
+        result_label.configure(text="Invalid username or password", foreground="red")
+        username_var.set("")
+        password_var.set("")
 
 
 window = tk.Tk()
 window.title("KU+ Login Page")
 window.attributes("-topmost",1)
+window.resizable(False,False)
 
 username_var = tk.StringVar()
 password_var = tk.StringVar()

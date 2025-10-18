@@ -43,6 +43,7 @@ def submit():
 window = tk.Tk()
 window.title("Register Page")
 window.attributes("-topmost",1)
+window.resizable(False,False)
 
 name_var = tk.StringVar()
 age_var = tk.StringVar()

@@ -17,13 +17,20 @@ for user in data.users:
         break
 
 if current_user is None:
-    current_user = {"name": name, "age": "-", "gender": "-", "balance": 0.0}
+    current_user = {"name": name, "age": "-", "gender": "-", "password": "", "balance": 0.0}
     data.users.append(current_user)
     data.current_user = current_user
 
+def save_users_to_data_py():
+    with open("data.py", "w", encoding="utf-8") as f:
+        f.write("users = [\n")
+        for user in data.users:
+            f.write(f"    {{'name': '{user['name']}', 'age': '{user['age']}', 'gender': '{user['gender']}', 'password': '{user.get('password','')}', 'balance': {user['balance']}}},\n")
+        f.write("]\n")
+
 window = tk.Tk()
 window.title("KU+")
-window.geometry("360x640")
+window.geometry("360x660")
 window.resizable(False, False)
 window.configure(bg="#F5F6F7")
 
@@ -92,7 +99,6 @@ def deposit():
     card.pack(padx=20, pady=10, fill="both", expand=True)
 
     tk.Label(card, text=f"Current Balance: ฿ {current_user['balance']:,.2f}", font=("Segoe UI", 13), fg=dark_text, bg="white").pack(anchor="w", padx=15, pady=(15,5))
-
     tk.Label(card, text="Enter amount to deposit:", font=("Segoe UI", 12), fg=dark_text, bg="white").pack(anchor="w", padx=15, pady=(10,5))
 
     amount_var = tk.StringVar()
@@ -108,6 +114,7 @@ def deposit():
                 return
             current_user['balance'] += amount
             update_balance_label()
+            save_users_to_data_py()
             messagebox.showinfo("Success", f"Successfully deposited ฿ {amount:,.2f}")
             deposit_window.destroy()
         except ValueError:
@@ -133,7 +140,6 @@ def withdraw():
     card.pack(padx=20, pady=10, fill="both", expand=True)
 
     tk.Label(card, text=f"Current Balance: ฿ {current_user['balance']:,.2f}", font=("Segoe UI", 13), fg=dark_text, bg="white").pack(anchor="w", padx=15, pady=(15,5))
-
     tk.Label(card, text="Enter amount to withdraw:", font=("Segoe UI", 12), fg=dark_text, bg="white").pack(anchor="w", padx=15, pady=(10,5))
 
     amount_var = tk.StringVar()
@@ -152,6 +158,7 @@ def withdraw():
                 return
             current_user['balance'] -= amount
             update_balance_label()
+            save_users_to_data_py()
             messagebox.showinfo("Success", f"Successfully withdrew ฿ {amount:,.2f}")
             withdraw_window.destroy()
         except ValueError:
@@ -198,6 +205,9 @@ deposit_btn.pack(fill="x", pady=10)
 
 withdraw_btn = ttk.Button(button_frame, text="Withdraw", style="App.TButton", command=withdraw)
 withdraw_btn.pack(fill="x", pady=10)
+
+history_btn = ttk.Button(button_frame, text="History", style="App.TButton")
+history_btn.pack(fill="x", pady=10)
 
 footer_label = ttk.Label(window, text="KUBank", background=bg_main, foreground="#777777", font=("Segoe UI", 9))
 footer_label.pack(side="bottom", pady=10)

@@ -57,3 +57,12 @@ login_button.pack(pady=10)
 
 register_button = ttk.Button(button_frame, text="สมัครสมาชิก", width=20, command=register)
 register_button.pack(pady=10)
+
+footer_label = ttk.Label(window,
+                         text="KUBank",
+                         font=("Segoe UI", 9),
+                         foreground="#DFFFE2",
+                         background="#006A4E")
+footer_label.pack(side="bottom", pady=15)
+
+window.mainloop()

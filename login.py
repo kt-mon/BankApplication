@@ -23,46 +23,49 @@ def login():
 
 window = tk.Tk()
 window.title("KU+ Login Page")
+window.geometry("360x640")
 window.resizable(False, False)
-window.configure(bg="#FFFFFF")
+
+k_green = "#00A950"
+light_text = "#FFFFFF"
+dark_text = "#333333"
+bg_white = "#FFFFFF"
+
+window.configure(bg=k_green)
 
 style = ttk.Style()
 style.theme_use('clam')
 
-k_green = "#00A950"
-dark_text = "#333333"
-light_text = "#FFFFFF"
-bg_white = "#FFFFFF"
-
-style.configure("TFrame", background=bg_white)
-style.configure("TLabel", background=bg_white, foreground=dark_text, font=("Helvetica", 12))
+style.configure("TFrame", background=k_green)
+style.configure("TLabel", background=k_green, foreground=light_text, font=("Helvetica", 12))
 style.configure("Header.TLabel", font=("Helvetica", 18, "bold"))
 style.configure("Field.TLabel", font=("Helvetica", 11))
-style.configure("Success.TLabel", background=bg_white, foreground=k_green, font=("Helvetica", 12))
-style.configure("Error.TLabel", background=bg_white, foreground="red", font=("Helvetica", 12))
+style.configure("Success.TLabel", background=k_green, foreground=light_text, font=("Helvetica", 12, "bold"))
+style.configure("Error.TLabel", background=k_green, foreground="yellow", font=("Helvetica", 12, "bold"))
 
 style.configure("TEntry",
     font=("Helvetica", 12),
     padding=10,
-    fieldbackground=bg_white
+    fieldbackground=bg_white,
+    foreground=dark_text
 )
 
 style.configure("App.TButton",
-    background=k_green,
-    foreground=light_text,
+    background=bg_white,
+    foreground=k_green,
     font=("Helvetica", 14, "bold"),
     borderwidth=0,
     padding=(20, 15)
 )
 style.map("App.TButton",
-    background=[('active', '#007d3c')]
+    background=[('active', '#E0E0E0')]
 )
 
 main_frame = ttk.Frame(window, style="TFrame", padding=(30, 30, 30, 30))
 main_frame.pack(fill="both", expand=True)
 
 try:
-    ku_img_open = Image.open("KU+.png")
+    ku_img_open = Image.open("KU_logo.png") 
     ku_img_open = ku_img_open.resize((80, 80))
     ku_img = ImageTk.PhotoImage(ku_img_open)
     img_label = ttk.Label(main_frame, image=ku_img, style="TFrame")

@@ -38,7 +38,7 @@ style.theme_use('clam')
 
 style.configure("TFrame", background=k_green)
 style.configure("TLabel", background=k_green, foreground=light_text, font=("Helvetica", 12))
-style.configure("Header.TLabel", font=("Helvetica", 18, "bold"))
+style.configure("Header.TLabel", font=("Helvetica", 18, "bold"))    
 style.configure("Field.TLabel", font=("Helvetica", 11))
 style.configure("Success.TLabel", background=k_green, foreground=light_text, font=("Helvetica", 12, "bold"))
 style.configure("Error.TLabel", background=k_green, foreground="yellow", font=("Helvetica", 12, "bold"))

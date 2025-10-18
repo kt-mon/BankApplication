@@ -24,7 +24,8 @@ def submit():
         "age" : age,
         "gender" : gender,
         "password" : password,
-        "balance" : 0.0
+        "balance" : 0.0,
+        "transaction" : []
     }
 
     users.append(users_data)

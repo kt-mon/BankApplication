@@ -17,16 +17,20 @@ for user in data.users:
         break
 
 if current_user is None:
-    current_user = {"name": name, "age": "-", "gender": "-", "password": "", "balance": 0.0}
+    current_user = {
+        "name": name, 
+        "age": "-", 
+        "gender": "-", 
+        "password": "", 
+        "balance": 0.0,
+        "transaction": []
+    }
     data.users.append(current_user)
     data.current_user = current_user
 
 def save_users_to_data_py():
     with open("data.py", "w", encoding="utf-8") as f:
-        f.write("users = [\n")
-        for user in data.users:
-            f.write(f"    {{'name': '{user['name']}', 'age': '{user['age']}', 'gender': '{user['gender']}', 'password': '{user.get('password','')}', 'balance': {user['balance']}}},\n")
-        f.write("]\n")
+        f.write("users = " + str(data.users))
 
 window = tk.Tk()
 window.title("KU+")
@@ -114,6 +118,9 @@ def deposit():
                 return
             current_user['balance'] += amount
             update_balance_label()
+            
+            current_user['transaction'].append(f"Deposited ฿ {amount:,.2f}")
+            
             save_users_to_data_py()
             messagebox.showinfo("Success", f"Successfully deposited ฿ {amount:,.2f}")
             deposit_window.destroy()
@@ -158,6 +165,9 @@ def withdraw():
                 return
             current_user['balance'] -= amount
             update_balance_label()
+            
+            current_user['transaction'].append(f"Withdrew ฿ {amount:,.2f}")
+
             save_users_to_data_py()
             messagebox.showinfo("Success", f"Successfully withdrew ฿ {amount:,.2f}")
             withdraw_window.destroy()
@@ -194,6 +204,31 @@ def show_personal_details():
     details_window.grab_set()
     window.wait_window(details_window)
 
+def show_history():
+    history_window = tk.Toplevel(window)
+    history_window.title("Transaction History")
+    history_window.geometry("360x400")
+    history_window.configure(bg="#F5F6F7")
+    history_window.attributes("-topmost", 1)
+    history_window.resizable(False, False)
+
+    tk.Label(history_window, text="Transaction History", font=("Segoe UI Semibold", 18), fg=k_green, bg="#F5F6F7").pack(pady=(20,10))
+
+    card = tk.Frame(history_window, bg="white", bd=1, relief="ridge")
+    card.pack(padx=20, pady=10, fill="both", expand=True)
+
+    transactions = current_user.get('transaction', [])
+    if transactions:
+        for t in reversed(transactions):
+            tk.Label(card, text=t, font=("Segoe UI", 12), fg=dark_text, bg="white", anchor="w").pack(fill="x", padx=15, pady=2)
+    else:
+        tk.Label(card, text="No transactions yet.", font=("Segoe UI", 12), fg=dark_text, bg="white").pack(pady=15)
+
+    history_window.transient(window)
+    history_window.grab_set()
+    window.wait_window(history_window)
+
+
 button_frame = ttk.Frame(window, style="App.TFrame", padding=(30, 20))
 button_frame.pack(fill="both", expand=True)
 
@@ -206,7 +241,7 @@ deposit_btn.pack(fill="x", pady=10)
 withdraw_btn = ttk.Button(button_frame, text="Withdraw", style="App.TButton", command=withdraw)
 withdraw_btn.pack(fill="x", pady=10)
 
-history_btn = ttk.Button(button_frame, text="History", style="App.TButton")
+history_btn = ttk.Button(button_frame, text="History", style="App.TButton", command=show_history)
 history_btn.pack(fill="x", pady=10)
 
 footer_label = ttk.Label(window, text="KUBank", background=bg_main, foreground="#777777", font=("Segoe UI", 9))

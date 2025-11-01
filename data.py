@@ -1,1 +1,0 @@
-users = [{'name': 'admin', 'age': '19', 'gender': 'male', 'password': '1234', 'balance': 0.0, 'transaction': []}]

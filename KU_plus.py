@@ -3,13 +3,15 @@ from tkinter import ttk, messagebox
 from PIL import ImageTk, Image
 
 
-#ส้วน Data
+#-----Data-----
 GLOBAL_USERS_LIST = []
 
+#-----ทำไว้เรียกใช้ข้อมูลใน List-----
 def load_users():
     global GLOBAL_USERS_LIST
     return GLOBAL_USERS_LIST
 
+#-----ทำไว้บันทึกข้อมูล-----
 def save_users(users_list):
     global GLOBAL_USERS_LIST
     GLOBAL_USERS_LIST = users_list
@@ -24,9 +26,8 @@ def open_main_app_window(name):
 
     if current_user is None:
         messagebox.showerror("Error", "ไม่พบข้อมูลผู้ใช้")
-        open_launcher_window() 
         return
-
+#-----Update ผู้ใช้ Realtime-----
     def save_current_user_changes():
         all_users_list = load_users()
         for i, u in enumerate(all_users_list):
@@ -38,16 +39,16 @@ def open_main_app_window(name):
         
         save_users(all_users_list) 
 
-
+#-----Tkinter Window-----
     window = tk.Tk()
     window.title("KU+")
     window.geometry("360x660")
     window.resizable(False, False)
     window.configure(bg="#F5F6F7")
 
+#-----ตั้งค่าการตกแต่ง------
     style = ttk.Style()
     style.theme_use('clam')
-
     k_green = "#00A950"
     k_dark = "#006A4E"
     dark_text = "#222222"
@@ -66,8 +67,9 @@ def open_main_app_window(name):
     header_frame = ttk.Frame(window, style="App.TFrame", padding=(20, 30, 20, 10))
     header_frame.pack(fill="x")
 
+#-----photo-----
     try:
-        ku_img_open = Image.open("Logo_KUplus.png")
+        ku_img_open = Image.open("Logo_KUplus.png") 
         ku_img_open = ku_img_open.resize((70, 70))
         ku_img = ImageTk.PhotoImage(ku_img_open)
         img_label = ttk.Label(header_frame, image=ku_img, background=bg_main)
@@ -141,9 +143,9 @@ def open_main_app_window(name):
                 messagebox.showwarning("Invalid", "Enter a valid number!", parent=deposit_window)
 
         confirm_btn = tk.Button(card, text="Confirm", font=("Segoe UI", 14, "bold"),
-                                bg=k_green, fg=light_text, activebackground="#009E60",
-                                activeforeground=light_text, bd=0, padx=20, pady=10,
-                                command=confirm_deposit)
+                                 bg=k_green, fg=light_text, activebackground="#009E60",
+                                 activeforeground=light_text, bd=0, padx=20, pady=10,
+                                 command=confirm_deposit)
         confirm_btn.pack(fill="x", padx=15, pady=(10, 15))
 
     def withdraw():
@@ -194,9 +196,9 @@ def open_main_app_window(name):
                 messagebox.showwarning("Invalid", "Enter a valid number!", parent=withdraw_window)
 
         confirm_btn = tk.Button(card, text="Confirm", font=("Segoe UI", 14, "bold"),
-                                bg=k_green, fg=light_text, activebackground="#009E60",
-                                activeforeground=light_text, bd=0, padx=20, pady=10,
-                                command=confirm_withdraw)
+                                 bg=k_green, fg=light_text, activebackground="#009E60",
+                                 activeforeground=light_text, bd=0, padx=20, pady=10,
+                                 command=confirm_withdraw)
         confirm_btn.pack(fill="x", padx=15, pady=(10, 15))
 
     def show_personal_details():
@@ -208,8 +210,8 @@ def open_main_app_window(name):
         details_window.geometry("360x280")
         
         header_label = tk.Label(details_window, text="Personal Details",
-                                font=("Segoe UI Semibold", 18),
-                                fg=k_green, bg="#F5F6F7")
+                                 font=("Segoe UI Semibold", 18),
+                                 fg=k_green, bg="#F5F6F7")
         header_label.pack(pady=(20, 10))
 
         card = tk.Frame(details_window, bg="white", bd=1, relief="solid")
@@ -279,6 +281,7 @@ def open_main_app_window(name):
     window.mainloop()
 
 def open_register_window():
+#-----ส่วนตั้งค่าการตกแต่ง-----
     k_green = "#00A950"
     light_text = "#FFFFFF"
     dark_text = "#333333"
@@ -298,6 +301,21 @@ def open_register_window():
             result_label.config(text="All fields are required *", fg=error_text)
             return
 
+        # **ตรวจสอบ Age ต้องเป็นตัวเลข**
+        if not age.isdigit():
+            result_label.config(text="Age must be a valid number.", fg=error_text)
+            return
+        
+        # เพิ่มการตรวจสอบอายุต้องมากกว่า 0 ด้วย
+        if int(age) <= 0:
+            result_label.config(text="Age must be greater than 0.", fg=error_text)
+            return
+
+        # **ตรวจสอบ Gender ต้องไม่มีตัวเลข**
+        if any(char.isdigit() for char in gender):
+            result_label.config(text="Gender cannot contain numbers.", fg=error_text)
+            return
+        
         for user in users:
             if user["name"] == name:
                 result_label.config(text="This name is already taken", fg=error_text)
@@ -327,6 +345,7 @@ def open_register_window():
 
         window.after(2000, close_and_open_launcher)
 
+#-----หน้าต่างของ register-----
     window = tk.Tk()
     window.title("Register Page")
     window.geometry("360x640")
@@ -342,10 +361,12 @@ def open_register_window():
     main_frame = tk.Frame(window, bg=k_green, padx=30, pady=30)
     main_frame.pack(fill="both", expand=True)
 
+#----–หัวเรื่อง-----
     title_label = tk.Label(main_frame, text="Create your account", 
                             font=("Helvetica", 18, "bold"), bg=k_green, fg=light_text)
     title_label.pack(anchor="w", pady=(10, 30))
 
+#-----ช่องใส่ชื่อ-----
     name_label = tk.Label(main_frame, text="Name", 
                             font=("Helvetica", 11), bg=k_green, fg=light_text)
     name_label.pack(anchor="w")
@@ -354,6 +375,7 @@ def open_register_window():
                             bd=0, relief="flat")
     name_entry.pack(fill="x", pady=(5, 15), ipady=10) 
 
+#-----ช่องใส่อายุ-----
     age_label = tk.Label(main_frame, text="Age", 
                             font=("Helvetica", 11), bg=k_green, fg=light_text)
     age_label.pack(anchor="w")
@@ -361,7 +383,7 @@ def open_register_window():
                             font=("Helvetica", 12), bg=bg_white, fg=dark_text, 
                             bd=0, relief="flat")
     age_entry.pack(fill="x", pady=(5, 15), ipady=10)
-
+#-----ช่องใส่เพศ-----
     gender_label = tk.Label(main_frame, text="Gender", 
                                 font=("Helvetica", 11), bg=k_green, fg=light_text)
     gender_label.pack(anchor="w")
@@ -370,6 +392,7 @@ def open_register_window():
                                 bd=0, relief="flat")
     gender_entry.pack(fill="x", pady=(5, 15), ipady=10)
 
+#-----ช่องใส่ password-----
     password_label = tk.Label(main_frame, text="Password", 
                                     font=("Helvetica", 11), bg=k_green, fg=light_text)
     password_label.pack(anchor="w")
@@ -378,22 +401,25 @@ def open_register_window():
                                     bd=0, relief="flat")
     password_entry.pack(fill="x", pady=(5, 15), ipady=10)
 
+#-----จุดไว้บอกสถานะการ register-----
     result_label = tk.Label(main_frame, text="", 
-                                font=("Helvetica", 12, "bold"), bg=k_green, fg=light_text)
+                                    font=("Helvetica", 12, "bold"), bg=k_green, fg=light_text)
     result_label.pack(pady=(10, 10))
 
+#-----ปุ่มยืนยันการสมัคร-----
     submit_button = tk.Button(main_frame, text="Submit", command=submit, 
-                                font=("Helvetica", 14, "bold"), 
-                                bg=bg_white, fg=k_green,
-                                bd=0, relief="flat", 
-                                activebackground="#E0E0E0",
-                                activeforeground=k_green)
+                                    font=("Helvetica", 14, "bold"), 
+                                    bg=bg_white, fg=k_green,
+                                    bd=0, relief="flat", 
+                                    activebackground="#E0E0E0",
+                                    activeforeground=k_green)
     submit_button.pack(fill="x", pady=20, ipady=10) 
 
     name_entry.focus()
     window.mainloop()
 
 def open_login_window():
+#-----ส่วนตั้งค่าการตกแต่ง-----
     k_green = "#00A950"
     light_text = "#FFFFFF"
     dark_text = "#333333"
@@ -419,7 +445,7 @@ def open_login_window():
         result_label.config(text="Invalid username or password", fg=error_text) 
         username_var.set("")
         password_var.set("")
-
+#-----หน้า Window-----
     window = tk.Tk()
     window.title("KU+ Login Page")
     window.geometry("360x640")
@@ -432,8 +458,9 @@ def open_login_window():
     main_frame = tk.Frame(window, bg=k_green, padx=30, pady=30)
     main_frame.pack(fill="both", expand=True)
 
-    try:
-        ku_img_open = Image.open("KU_logo.png") 
+#-----photo-----
+    try:   
+        ku_img_open = Image.open("Logo_KUplus.png") 
         ku_img_open = ku_img_open.resize((80, 80))
         ku_img = ImageTk.PhotoImage(ku_img_open)
         img_label = tk.Label(main_frame, image=ku_img, bg=k_green)
@@ -441,7 +468,7 @@ def open_login_window():
         img_label.pack(pady=(20, 10))
     except Exception:
         pass
-
+#-----text-----
     title_label = tk.Label(main_frame, text="Login to your account", 
                             font=("Helvetica", 18, "bold"), bg=k_green, fg=light_text)
     title_label.pack(pady=(10, 30))
@@ -466,12 +493,13 @@ def open_login_window():
                                     font=("Helvetica", 12, "bold"), bg=k_green, fg=light_text)
     result_label.pack(pady=(10, 10))
 
+#-----button-----
     login_button = tk.Button(main_frame, text="Login", command=login,
-                                font=("Helvetica", 14, "bold"), 
-                                bg=bg_white, fg=k_green,
-                                bd=0, relief="flat",
-                                activebackground="#E0E0E0",
-                                activeforeground=k_green)
+                                    font=("Helvetica", 14, "bold"), 
+                                    bg=bg_white, fg=k_green,
+                                    bd=0, relief="flat",
+                                    activebackground="#E0E0E0",
+                                    activeforeground=k_green)
     login_button.pack(fill="x", pady=20, ipady=10)
 
     username_entry.focus()
@@ -492,11 +520,14 @@ def open_launcher_window():
     window.resizable(False, False)
     window.configure(bg="#006A4E")
 
-
-    logo_img_open = Image.open("Logo_KUplus.png")
-    logo_img_open = logo_img_open.resize((120, 120))
-    logo_img = ImageTk.PhotoImage(logo_img_open)
-
+    try:
+        logo_img_open = Image.open("Logo_KUplus.png")
+        logo_img_open = logo_img_open.resize((120, 120))
+        logo_img = ImageTk.PhotoImage(logo_img_open)
+    except Exception:
+        # ใช้เฟรมเปล่าแทนถ้าหาไฟล์รูปไม่เจอ
+        logo_img = None
+        
     style = ttk.Style()
     style.theme_use("clam")
 
@@ -510,15 +541,18 @@ def open_launcher_window():
                         foreground="white",
                         background="#00A86B",
                         borderwidth=0,
-                        padding=10)
+                        padding=10) 
 
     style.map("TButton",
                 background=[("active", "#00C77B"), ("pressed", "#009E60")])
-
+    
     if logo_img:
         img_label = ttk.Label(window, image=logo_img, background="#006A4E")
         img_label.image = logo_img 
         img_label.pack(pady=(40, 10))
+    else:
+        # Placeholder ถ้าไม่มีรูป
+        tk.Label(window, text="[KU PLUS LOGO]", font=("Segoe UI", 16), bg="#006A4E", fg="white").pack(pady=(40, 10))
 
     title_label = ttk.Label(window, text="KU PLUS", font=("Segoe UI Semibold", 20, "bold"))
     title_label.pack(pady=(0, 20))
